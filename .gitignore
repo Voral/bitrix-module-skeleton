@@ -1,0 +1,14 @@
+/info/
+*.tar.gz
+.directory
+.last_version
+/updates/*/*
+!/updates/*/descr*
+!/updates/*/updater*.php
+!/updates/*/version-control.txt
+.idea
+/bx/
+/var/
+.mock-builder-cache
+reports
+.phpunit.result.cache

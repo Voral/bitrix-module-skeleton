@@ -1,0 +1,13 @@
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+
+# Параметры PHPStan
+parameters:
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    excludePaths:
+        - tests
+    ignoreErrors:
+        - '#Trait .*SelectOptions is used zero times and is not analysed#' # Регулярное выражение для игнорирования
+    level: 7

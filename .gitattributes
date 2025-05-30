@@ -1,0 +1,13 @@
+/.phpstan.neon.dist export-ignore
+/.php-cs-fixer.php export-ignore
+/tests export-ignore
+/phpunit.xml export-ignore
+/.gitignore export-ignore
+/composer.lock export-ignore
+/updates export-ignore
+/.vs-mock-builder.php export-ignore
+/.vs-version-increment.php export-ignore
+/.gitattributes export-ignore
+/phpstan-bootstrap.php export-ignore
+/CHANGELOG.md export-ignore
+/scripts export-ignore

@@ -1,0 +1,76 @@
+{
+  "name": "voral/bitrix-module-skeleton",
+  "autoload": {
+    "psr-4": {
+      "Vendor\\Skeleton\\": "src/lib/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Vendor\\Skeleton\\Tests\\": "tests/",
+      "Bitrix\\": "bx/Bitrix"
+    }
+  },
+  "authors": [
+    {
+      "name": "Alexander Vorobyev",
+      "email": "voral.adm@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "nikic/php-parser": "^5.4"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.66.0",
+    "phpunit/phpunit": "^10.5",
+    "php-mock/php-mock-phpunit": "^2.13",
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-phpunit": "^2.0",
+    "voral/mock-builder": "^1.0",
+    "voral/version-increment": "^3.0",
+    "voral/mock-builder-bitrix": "^1.0",
+    "voral/bitrix-module-tool": "^1.0"
+  },
+  "prefer-stable": true,
+  "archive": {
+    "exclude": [
+      "/tests",
+      ".phpstan.neon.dist",
+      "phpunit.xml"
+    ]
+  },
+  "license": "MIT",
+  "scripts": {
+    "mock:bx": "php ./vendor/bin/vs-mock-builder.php",
+    "vi": "php ./vendor/bin/vs-version-increment --no-commit",
+    "vi:debug": "php ./vendor/bin/vs-version-increment --debug",
+    "test": "php vendor/bin/phpunit --display-warnings",
+    "coverage": "php -dzend_extension=xdebug.so -dxdebug.mode=coverage vendor/bin/phpunit --coverage-text",
+    "stan": "vendor/bin/phpstan analyse src/lib tests",
+    "fixer": "vendor/bin/php-cs-fixer fix --dry-run --diff",
+    "checkit": [
+      "@fixer",
+      "@stan"
+    ],
+    "pack:last": "sh scripts/pack-last.sh",
+    "pack:ver": "sh scripts/pack-version.sh",
+    "pack": [
+      "@pack:ver",
+      "@pack:last"
+    ]
+  },
+  "scripts-descriptions": {
+    "mock:bx": "Mock Bitrix modules",
+    "vi": "Increment Version without commit",
+    "vi:debug": "Increment Version Debug mode",
+    "test": "Test",
+    "coverage": "Generate coverage report",
+    "stan": "Analyse code with PHPStan",
+    "fixer": "Fix code",
+    "checkit": "Check code with PHPStan and PHP CS Fixer",
+    "pack:last": "Pack last version module",
+    "pack:ver": "Pack module update package",
+    "pack": "Pack module"
+  }
+}
