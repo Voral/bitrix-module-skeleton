@@ -2,4 +2,7 @@
 
 declare(strict_types=1);
 
-\Bitrix\Main\Loader::registerNamespace('Vendor\Skeleton', __DIR__ . '/lib');
+use Bitrix\Main\Loader;
+
+Loader::includeModule('vasoft.core');
+Loader::registerNamespace('Vendor\Skeleton', __DIR__ . '/lib');
