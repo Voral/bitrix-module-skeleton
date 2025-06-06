@@ -51,7 +51,10 @@
 1. Клонируйте репозиторий
 
     ```bash
+    // Для простого модуля 
     git clone https://github.com/Voral/bitrix-module-skeleton
+    // для модуля использующего vasoft.core
+    git clone -b core https://github.com/Voral/bitrix-module-skeleton
     ```
 2. Разрешите запуск и запустите скрипт init.sh. Он запросит ИД вендора и название модуля и произведет замены в файлах с
    учетом этого, заменит текст README.md, инициализирует новый git репозиторий, добавляет в `.gitignore`
