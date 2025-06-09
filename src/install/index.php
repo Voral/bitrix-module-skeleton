@@ -8,8 +8,6 @@ use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
 use Bitrix\Main;
-use Vendor\Skeleton\System\Updater\Handlers;
-use Vendor\Skeleton\System\Updater\Tables;
 use Bitrix\Main\Application;
 
 Loc::loadMessages(__FILE__);
@@ -23,8 +21,6 @@ class vendor_skeleton extends CModule
     var $MODULE_DESCRIPTION;
     var $MODULE_GROUP_RIGHTS = "Y";
     var $SHOW_SUPER_ADMIN_GROUP_RIGHTS = "Y";
-    private int $step = 1;
-    private bool $removeData = true;
 
     public function __construct()
     {
@@ -70,11 +66,7 @@ class vendor_skeleton extends CModule
         }
         $result = false;
         try {
-            $this->initModules();
             ModuleManager::registerModule($this->MODULE_ID);
-            $this->initModule();
-            $this->InstallDB();
-            $this->InstallEvents();
             $result = true;
         } catch (Exception $exception) {
             $APPLICATION->ThrowException($exception->getMessage());
@@ -88,94 +80,12 @@ class vendor_skeleton extends CModule
      */
     public function DoUninstall(): bool
     {
-        global $APPLICATION, $USER;
+        global $USER;
         if (!$USER->IsAdmin()) {
             return false;
         }
-        $this->processRequest();
-        if ($this->step === 1) {
-            $APPLICATION->IncludeAdminFile(Loc::getMessage('VENDOR_SKELETON_UNINSTALL_TITLE'), __DIR__ . '/unstep1.php');
-            return false;
-        }
-        $result = false;
-        if ($this->step === 2) {
-            try {
-                $this->initModules();
-                $this->initModule();
-                $this->UnInstallEvents();
-                if ($this->removeData) {
-                    $this->UnInstallDB();
-                    Option::delete($this->MODULE_ID);
-                }
-                ModuleManager::unRegisterModule($this->MODULE_ID);
-                $APPLICATION->IncludeAdminFile(
-                    Loc::getMessage('VENDOR_SKELETON_UNINSTALL_TITLE'),
-                    __DIR__ . '/unstep2.php'
-                );
-                $result = true;
-            } catch (Throwable $exception) {
-                $APPLICATION->ThrowException($exception->getMessage());
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * @return bool
-     * @throws Main\ArgumentException
-     * @throws Main\SystemException
-     */
-    public function InstallDB(): bool
-    {
-        (new Tables())->check();
+        Option::delete($this->MODULE_ID);
+        ModuleManager::unRegisterModule($this->MODULE_ID);
         return true;
-    }
-
-    /**
-     * @return bool
-     * @throws Main\ArgumentException
-     * @throws Main\SystemException
-     */
-    public function UnInstallDB(): bool
-    {
-        (new Tables())->clean();
-        return true;
-    }
-
-    /**
-     * @return bool
-     * @throws Main\DB\SqlQueryException
-     */
-    public function InstallEvents(): bool
-    {
-        (new Handlers())->check();
-        return true;
-    }
-
-    /**
-     * @throws Main\DB\SqlQueryException
-     */
-    public function UnInstallEvents(): bool
-    {
-        (new Handlers())->clean();
-        return true;
-    }
-
-    /**
-     * @return void
-     * @throws Main\SystemException
-     */
-    private function processRequest(): void
-    {
-        $app = Application::getInstance();
-        if ($app === null) {
-            throw new Main\SystemException(Loc::getMessage('VENDOR_SKELETON_ERROR_CORE'));
-        }
-        $request = $app->getContext()->getRequest();
-        $this->step = (int)$request->get('step');
-        $this->removeData = trim($request->get('savedata') ?? '') !== 'Y';
-        if (!check_bitrix_sessid() || $this->step > 2 || $this->step < 1) {
-            $this->step = 1;
-        }
     }
 }
