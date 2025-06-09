@@ -30,7 +30,7 @@ for dir in "${DIRECTORIES[@]}"; do
   done
 done
 
-echo ".vs-mock-builder.local.php" >> .gitignore
+echo -e "\n.vs-mock-builder.local.php" >> .gitignore
 
 # Обновляем README.md
 cat <<EOL >> README.md
